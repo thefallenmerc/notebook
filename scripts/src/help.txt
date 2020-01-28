@@ -1,0 +1,5 @@
+Reactr
+    - A utility script to create react components and other stuff
+
+    command                 description
+    make:component          makes a react component
