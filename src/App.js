@@ -1,9 +1,26 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import socketIOClient from 'socket.io-client';
 
-function App() {
+const App = () => {
+  const [userData, setUserData] = useState([]);
+
+  useEffect(_ => {
+    fetch('http://localhost:1000/some/address')
+      .then(response => response.json())
+      .then(data => {
+        setUserData(data);
+      })
+    const socket = socketIOClient('http://localhost:1000');
+    socket.on('message', message => {
+      console.log(message);
+    })
+  }, []);
+
   return (
-    <div className="App">
+    <div>
+      {
+        JSON.stringify(userData)
+      }
     </div>
   );
 }
