@@ -1,0 +1,19 @@
+.sideBar {
+  width: 300px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  box-shadow: 0 0 5px 3px #23232323;
+  input {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+  }
+}
+.mainContainer {
+  padding-left: 300px;
+}
