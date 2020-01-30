@@ -40,7 +40,7 @@ export default function Sidebar(props) {
                 onChange={search}
                 onKeyUp={clearIfEscape}
                 value={query} />
-            <div className="py-2">
+            <div className="py-2 sidebarLinkContainer">
                 {
                     notes.map(note => {
                         return <Link to={"/note/" + note.id} key={note.id} className="p-2 hover:bg-red-500 hover:text-white cursor-pointer block">{note.title}</Link>;
