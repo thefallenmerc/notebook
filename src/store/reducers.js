@@ -1,9 +1,9 @@
-import  { ADD_NOTE, SET_NOTES, EDIT_NOTE, GET_NOTE } from './actions';
+import  { ADD_NOTE, SET_NOTES, EDIT_NOTE } from './actions';
 import { combineReducers } from 'redux';
 
-const initialState = {
-    notes: []
-};
+// const initialState = {
+//     notes: []
+// };
 
 function notes(state = [], action) {
     switch(action.type) {
