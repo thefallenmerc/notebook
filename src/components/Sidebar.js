@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default function Sidebar(props) {
+const Sidebar = ({ noteList }) => {
 
     const [query, setQuery] = useState('');
-    const [notes, setNotes] = useState([]);
+    const [notes, setNotes] = useState(noteList);
 
-    useEffect(() => {
-        setNotes(props.notes);
-    }, [props.notes]);
+    useEffect(_ => {
+        setNotes(noteList);
+    }, [noteList])
 
     const search = event => {
         const searchQuery = event.target.value;
         setQuery(searchQuery);
         if (searchQuery.length === 0) {
-            return setNotes(props.notes);
+            return setNotes(noteList);
         }
-        return setNotes(props.notes.filter(note => {
+        return setNotes(noteList.filter(note => {
             return note.title.includes(event.target.value);
         }));
     };
@@ -24,7 +25,7 @@ export default function Sidebar(props) {
     const clearIfEscape = event => {
         if (event.key === 'Escape') {
             setQuery('');
-            return setNotes(props.notes);
+            return setNotes(noteList);
         }
     }
 
@@ -50,3 +51,11 @@ export default function Sidebar(props) {
         </section>
     );
 }
+
+const mapStateToProps = state => {
+    return ({
+        noteList: state.notes
+    });
+};
+
+export default connect(mapStateToProps)(Sidebar);

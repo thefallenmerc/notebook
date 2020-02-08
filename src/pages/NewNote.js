@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { addNote as addNoteAction } from '../store/actions';
 
-export default function NewNotePage(props) {
+const NewNotePage = ({ notes, addNote }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -12,30 +14,47 @@ export default function NewNotePage(props) {
         setDescription(event.target.value);
     }
 
-    const addNote = () => {
-        const notes = (JSON.parse(localStorage.getItem('notes')) || []);
+    const saveNote = () => {
+        if (!title.trim()) {
+            return;
+        }
         const note = { id: (new Date()).getTime(), title, description };
-        notes.push(note);
-        localStorage.setItem('notes', JSON.stringify(notes));
-        props.setNotes(notes);
+        addNote(note);
         setTitle('');
         setDescription('');
     };
 
     return (
         <div>
-            <div className="text-xl font-bold text-red-500 py-3 px-8 border-b border-red-300">Add a new note</div>
+            <div className="py-3 px-8 border-b border-red-300">
+                <input
+                    placeholder="Please enter a title..."
+                    onChange={updateTitle}
+                    value={title}
+                    className="text-xl font-bold text-red-500 focus:outline-none"
+                    style={{ width: 'calc(100% - 50px)' }}
+                />
+                <button onClick={saveNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Save</button>
+            </div>
             <div className="p-8">
-                <input placeholder="Title" onChange={updateTitle} value={title} className="block mb-3 border-red-300 border w-full px-2 py-1" />
                 <textarea
-                    placeholder="Description"
+                    placeholder="Please write some description..."
                     onChange={updateDescription}
                     value={description}
-                    className="block mb-3 border-red-300 border w-full px-2 py-1"
-                    style={{ minHeight: '15rem' }}
+                    className="block mb-3 w-full h-full px-2 py-1 focus:outline-none"
+                    style={{ minHeight: '15rem', resize: "none" }}
                 />
-                <button onClick={addNote} className="rounded px-10 py-1 uppercase block bg-red-500 text-white hover:bg-red-600">Add</button>
             </div>
         </div>
     )
 }
+
+const mapStateToProps = state => ({
+    notes: state.notes
+});
+
+const mapDispatchToProps = dispatch => ({
+    addNote: notes => dispatch(addNoteAction(notes))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewNotePage);
