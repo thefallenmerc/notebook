@@ -18,7 +18,7 @@ const Sidebar = ({ noteList }) => {
             return setNotes(noteList);
         }
         return setNotes(noteList.filter(note => {
-            return note.title.includes(event.target.value);
+            return note.title.toLowerCase().includes(event.target.value.toLowerCase());
         }));
     };
 
