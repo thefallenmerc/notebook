@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { editNote } from '../store/actions';
+import { editNote, deleteNote } from '../store/actions';
 
-const EditNotePage = ({ notes, match, history, editNote }) => {
+const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -26,9 +26,11 @@ const EditNotePage = ({ notes, match, history, editNote }) => {
     const saveNote = () => {
         const updatedNote = { id: parseInt(id), title, description };
         editNote(updatedNote);
-        setTitle('');
-        setDescription('');
-        history.push('/note/' + id);
+    };
+
+    const removeNote = () => {
+        deleteNote(id);
+        history.push('/');
     };
 
     return (
@@ -39,9 +41,10 @@ const EditNotePage = ({ notes, match, history, editNote }) => {
                     onChange={updateTitle}
                     value={title}
                     className="text-xl font-bold text-red-500 focus:outline-none"
-                    style={{ width: 'calc(100% - 50px)' }}
+                    style={{ width: 'calc(100% - 120px)' }}
                 />
-                <button onClick={saveNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Save</button>
+                <button onClick={removeNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Delete</button>
+                <button onClick={saveNote} className="float-right uppercase rounded text-white bg-green-500 hover:bg-green-600 text-sm py-1 px-2 cursor-pointer mr-1">Save</button>
             </div>
             <div className="p-8 flex" style={{height: "calc(100vh - 55px)"}}>
                 <textarea
@@ -62,7 +65,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        editNote: notes => dispatch(editNote(notes))
+        editNote: notes => dispatch(editNote(notes)),
+        deleteNote: id => dispatch(deleteNote(id))
     };
 }
 

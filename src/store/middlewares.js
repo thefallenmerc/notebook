@@ -1,4 +1,4 @@
-import { ADD_NOTE, EDIT_NOTE } from "./actions";
+import { ADD_NOTE, EDIT_NOTE, DELETE_NOTE } from "./actions";
 
 export const mainMiddleware = store => next => action => {
     next(action);
@@ -7,8 +7,10 @@ export const mainMiddleware = store => next => action => {
         case ADD_NOTE:
             localStorage.setItem('notes', JSON.stringify(notes));
             break;
-
         case EDIT_NOTE:
+            localStorage.setItem('notes', JSON.stringify(notes));
+            break;
+        case DELETE_NOTE:
             localStorage.setItem('notes', JSON.stringify(notes));
             break;
         default:
