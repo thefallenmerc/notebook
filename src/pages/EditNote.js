@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { editNote, deleteNote } from '../store/actions';
+import { editNote } from '../store/reducers/notes';
+import { deleteNote } from '../store/reducers/notes';
+import { bindActionCreators } from 'redux';
 
 const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
 
@@ -11,8 +13,8 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
     const note = notes.find(note => note.id === parseInt(id));
 
     useEffect(() => {
-        setTitle(note.title);
-        setDescription(note.description);
+        setTitle(note.title || '');
+        setDescription(note.description || '');
     }, [note.title, note.description]);
 
     const updateTitle = (event) => {
@@ -46,7 +48,7 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
                 <button onClick={removeNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Delete</button>
                 <button onClick={saveNote} className="float-right uppercase rounded text-white bg-green-500 hover:bg-green-600 text-sm py-1 px-2 cursor-pointer mr-1">Save</button>
             </div>
-            <div className="p-8 flex" style={{height: "calc(100vh - 55px)"}}>
+            <div className="p-8 flex" style={{ height: "calc(100vh - 55px)" }}>
                 <textarea
                     placeholder="Please write some description..."
                     onChange={updateDescription}
@@ -63,11 +65,15 @@ const mapStateToProps = state => ({
     notes: state.notes
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        editNote: notes => dispatch(editNote(notes)),
-        deleteNote: id => dispatch(deleteNote(id))
-    };
-}
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         editNote: notes => dispatch(editNote(notes)),
+//         deleteNote: id => dispatch(deleteNote(id))
+//     };
+// }
+const mapDispatchToProps = dispatch => bindActionCreators({
+    editNote: editNote,
+    deleteNote: deleteNote
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditNotePage);

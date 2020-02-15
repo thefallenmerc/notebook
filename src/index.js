@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
-import rootReducer from './store/reducers';
 import { Provider } from 'react-redux';
-import { mainMiddleware } from './store/middlewares';
+import { setUser } from './store/actions';
+import store from './store/store';
+import { getNotes } from './store/reducers/notes';
 
-const store = createStore(rootReducer, {}, applyMiddleware(mainMiddleware));
+store.dispatch(setUser(JSON.parse(localStorage.getItem('user')) || null));
+store.dispatch(getNotes());
 
 ReactDOM.render(
     <Provider store={store}>

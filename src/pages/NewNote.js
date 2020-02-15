@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addNote as addNoteAction } from '../store/actions';
+import { addNote } from '../store/reducers/notes';
+import { bindActionCreators } from 'redux';
 
 const NewNotePage = ({ notes, addNote }) => {
     const [title, setTitle] = useState('');
@@ -53,8 +54,8 @@ const mapStateToProps = state => ({
     notes: state.notes
 });
 
-const mapDispatchToProps = dispatch => ({
-    addNote: notes => dispatch(addNoteAction(notes))
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    addNote: addNote
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewNotePage);

@@ -20,6 +20,26 @@
 }
 .mainContainer {
   padding-left: 300px;
+  &.guest {
+    padding-left: 0;
+  }
+}
+
+.loader {
+  filter: grayscale(1);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media only screen and (max-width: 480px) {

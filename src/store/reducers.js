@@ -1,4 +1,4 @@
-import  { ADD_NOTE, SET_NOTES, EDIT_NOTE, DELETE_NOTE } from './actions';
+import { ADD_NOTE, SET_NOTES, EDIT_NOTE, DELETE_NOTE, SET_USER, STATE_SUCCESS, STATE_ERROR, STATE_PENDING } from './actions';
 import { combineReducers } from 'redux';
 
 // const initialState = {
@@ -6,7 +6,7 @@ import { combineReducers } from 'redux';
 // };
 
 function notes(state = [], action) {
-    switch(action.type) {
+    switch (action.type) {
         case ADD_NOTE:
             return [
                 ...state,
@@ -33,8 +33,32 @@ function notes(state = [], action) {
     }
 }
 
+function user(state = null, action) {
+    switch (action.type) {
+        case SET_USER:
+            return action.user;
+        default:
+            return state;
+    }
+}
+
+function state(state = STATE_SUCCESS, action) {
+    switch (action.type) {
+        case STATE_SUCCESS:
+            return STATE_SUCCESS;
+        case STATE_ERROR:
+            return STATE_ERROR;
+        case STATE_PENDING:
+            return STATE_PENDING;
+        default:
+            return STATE_SUCCESS;
+    }
+}
+
 const notebook = combineReducers({
-    notes
+    user,
+    notes,
+    state
 });
 
 export default notebook;
