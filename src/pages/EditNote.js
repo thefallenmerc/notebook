@@ -37,7 +37,7 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
 
     return (
         <div>
-            <div className="py-3 px-8 border-b border-red-300">
+            <div className="py-3 md:px-8 px-3 border-b border-red-300">
                 <input
                     placeholder="Title"
                     onChange={updateTitle}
@@ -48,12 +48,12 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
                 <button onClick={removeNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Delete</button>
                 <button onClick={saveNote} className="float-right uppercase rounded text-white bg-green-500 hover:bg-green-600 text-sm py-1 px-2 cursor-pointer mr-1">Save</button>
             </div>
-            <div className="p-8 flex" style={{ height: "calc(100vh - 55px)" }}>
+            <div className="md:px-8 px-3 flex" style={{ height: "calc(100vh - 55px)" }}>
                 <textarea
                     placeholder="Please write some description..."
                     onChange={updateDescription}
                     value={description}
-                    className="block mb-3 w-full h-full px-2 py-1 focus:outline-none"
+                    className="block mb-3 w-full h-full md:px-2 py-1 focus:outline-none"
                     style={{ minHeight: '15rem', resize: "none" }}
                 />
             </div>
