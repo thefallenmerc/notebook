@@ -1,61 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import AuthService from '../services/AuthService';
-import { setUser } from '../store/actions';
 import { bindActionCreators } from 'redux';
 import { getNotes } from '../store/reducers/notes';
+import { login, logout } from '../store/reducers/auth';
+import { STATE_ERROR } from '../store/actions';
 
-function DashboardPage({ user, updateUser, fetchNotes }) {
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
-
-    const updateEmail = event => {
-        setEmail(event.target.value);
-    }
-
-    const updatePassword = event => {
-        setPassword(event.target.value);
-    }
+function DashboardPage({ user, doLogin, doLogout, fetchNotes, state }) {
 
     const authenticate = event => {
-        const form = new FormData();
-        form.append('email', email);
-        form.append('password', password);
-        AuthService.login(form)
-            .then(response => {
-                switch (response.status) {
-                    case 200:
-                        setEmailError('');
-                        setPasswordError('');
-                        AuthService.saveUser(response.body);
-                        updateUser(response.body);
-                        fetchNotes();
-                        break;
-                    case 422:
-                        if ('email' in response.body) {
-                            setEmailError(response.body.email[0]);
-                        } else {
-                            setEmailError('');
-                        }
-                        if ('password' in response.body) {
-                            setPasswordError(response.body.password[0]);
-                        } else {
-                            setPasswordError('');
-                        }
-                        break;
-                    default:
-                        break;
-                };
-            })
+        event.preventDefault();
+        const form = event.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        doLogin({ email, password });
     }
 
     const logout = () => {
-        AuthService.removeUser();
-        updateUser(null);
-        fetchNotes();
+        doLogout();
     }
 
 
@@ -69,35 +30,32 @@ function DashboardPage({ user, updateUser, fetchNotes }) {
                         <div className="text-center">
                             <div className="mb-5">Welcome, {user.name}</div>
                             <button
-                             className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white uppercase rounded focus:outline-none block mx-auto"
-                             onClick={logout}
-                             >Logout</button>
+                                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white uppercase rounded focus:outline-none block mx-auto"
+                                onClick={logout}
+                            >Logout</button>
                         </div>
                         :
-                        <div className="">
-                            {emailError ? <span className="text-red-500 text-xs">{emailError}</span> : ""}
+                        <form className="" onSubmit={authenticate}>
+                            {state === STATE_ERROR ? <span className="text-red-500 text-xs text-center w-full block mb-3">Please check your details!</span> : ""}
                             <input
                                 placeholder="Email"
-                                value={email}
-                                onChange={updateEmail}
+                                name="email"
                                 type="email"
                                 className="block py-2 w-64 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 mb-3 mx-auto"
                             />
-                            {passwordError ? <span className="text-red-500 text-xs">{passwordError}</span> : ""}
                             <input
                                 placeholder="Password"
-                                value={password}
-                                onChange={updatePassword}
+                                name="password"
                                 type="password"
                                 className="block py-2 w-64 focus:outline-none hover:bg-gray-100 focus:bg-gray-100 mb-5 mx-auto"
                             />
                             <button
                                 className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white uppercase rounded focus:outline-none block mx-auto mb-3"
-                                onClick={authenticate}
+                                type="submit"
                             >Login</button>
                             <span className="text-xs text-red-500 block text-center">Logging in will create account if not present already!</span>
                             <span className="text-xs text-red-500 block text-center">No verification required!</span>
-                        </div>
+                        </form>
                 }
             </div>
         </div>
@@ -105,12 +63,14 @@ function DashboardPage({ user, updateUser, fetchNotes }) {
 }
 
 const mapStateToProps = state => ({
-    user: state.user
+    user: state.user,
+    state: state.state
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    updateUser: setUser,
-    fetchNotes: getNotes
+    doLogin: login,
+    doLogout: logout,
+    fetchNotes: getNotes,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

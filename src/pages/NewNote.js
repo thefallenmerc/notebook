@@ -33,15 +33,17 @@ const NewNotePage = ({ notes, addNote }) => {
                     onChange={updateTitle}
                     value={title}
                     className="text-xl font-bold text-red-500 focus:outline-none"
+                    tabIndex="0"
                     style={{ width: 'calc(100% - 50px)' }}
                 />
-                <button onClick={saveNote} className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Save</button>
+                <button onClick={saveNote} tabIndex="3" className="float-right uppercase rounded text-white bg-red-500 hover:bg-red-600 text-sm py-1 px-2 cursor-pointer">Save</button>
             </div>
-            <div className="p-8">
+            <div className="p-8" style={{ height: "calc(100vh - 55px)" }}>
                 <textarea
                     placeholder="Please write some description..."
                     onChange={updateDescription}
                     value={description}
+                    tabIndex="2"
                     className="block mb-3 w-full h-full px-2 py-1 focus:outline-none"
                     style={{ minHeight: '15rem', resize: "none" }}
                 />

@@ -9,10 +9,10 @@ export default {
         }).then(handleResponse);
     },
     saveUser: user => {
-        localStorage.setItem('user', JSON.stringify(user));
+        return Promise.resolve(localStorage.setItem('user', JSON.stringify(user)));
     },
     removeUser: () => {
-        localStorage.removeItem('user');
+        return Promise.resolve(localStorage.removeItem('user'));
     },
 
 }
