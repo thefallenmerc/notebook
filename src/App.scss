@@ -42,12 +42,31 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
+.shown-on-mobile {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .shown-on-mobile {
+    display: block;
+  }
+  .hidden-on-mobile {
+    display: none;
+  }
   .sideBar {
     width: 100%;
+    background-color: white;
+    &.not-visible {
+      bottom: auto;
+      input,
+      .sidebarLinkContainer {
+        display: none;
+      }
+    }
   }
   .mainContainer {
     padding-left: 0;
+    padding-top: 54px;
   }
 }
 
