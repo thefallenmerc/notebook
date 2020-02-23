@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { setUser } from './store/actions';
 import store from './store/store';
@@ -14,9 +14,17 @@ store.dispatch(getNotes());
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router>
-            <App />
-        </Router>
+        {
+            window.location.hostname.indexOf('github.io') >= 0
+                ?
+                <HashRouter>
+                    <App />
+                </HashRouter>
+                :
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+        }
     </Provider>
     , document.getElementById('root'));
 
