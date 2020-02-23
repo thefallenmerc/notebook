@@ -9,6 +9,8 @@ import EditNotePage from './pages/EditNote';
 import './styles/tailwind.css';
 import './App.scss';
 
+import loader from './loader.gif';
+
 import { connect } from 'react-redux';
 import { STATE_PENDING } from './store/actions';
 
@@ -19,7 +21,7 @@ const App = ({ state, user }) => {
       ?
       <div className="w-screen h-screen flex justify-center items-center">
         {/* <div className="w-10 h-10 border-2 border-l-0 border-gray-400 rounded-full spin"></div> */}
-        <img src="/loader.gif" alt="loading" className="loader" />
+        <img src={loader} alt="loading" className="loader" />
       </div>
       :
       <div>

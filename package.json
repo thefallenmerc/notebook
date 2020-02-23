@@ -2,6 +2,7 @@
   "name": "react-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://thefallenmerc.github.io/notebook/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -20,6 +21,8 @@
     "tw:css": "node_modules\\.bin\\tailwind build src/styles/tailwind.src.css -c tailwind.config.js -o src/styles/tailwind.css",
     "start": "npm run tw:css && react-scripts start",
     "build": "npm run tw:css && react-scripts build",
+    "predeploy": "npm run build --prod",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
