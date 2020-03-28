@@ -4,13 +4,13 @@ import { editNote } from '../store/reducers/notes';
 import { deleteNote } from '../store/reducers/notes';
 import { bindActionCreators } from 'redux';
 
-const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
+const EditNotePage = ({ notes, match, history, editNote, deleteNote, state }) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
     const { params: { id } } = match;
-    const note = notes.find(note => note.id === parseInt(id));
+    const note = notes.find(note => note.id === parseInt(id)) ?? {id: 0, title: '', description: '', uid: ''};
 
     useEffect(() => {
         setTitle(note.title || '');
@@ -26,12 +26,12 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
     }
 
     const saveNote = () => {
-        const updatedNote = { id: parseInt(id), title, description };
+        const updatedNote = { id: parseInt(id), title, description, uid: note.uid };
         editNote(updatedNote);
     };
 
     const removeNote = () => {
-        deleteNote(id);
+        deleteNote(note.uid);
         history.push('/');
     };
 
@@ -62,7 +62,8 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote }) => {
 }
 
 const mapStateToProps = state => ({
-    notes: state.notes
+    notes: state.notes,
+    state: state.state,
 });
 
 // const mapDispatchToProps = dispatch => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getNotes } from '../store/reducers/notes';
 import { login, logout } from '../store/reducers/auth';
 import { STATE_ERROR } from '../store/actions';
+import { LogoutButton } from '../components/LogoutButton';
 
-function DashboardPage({ user, doLogin, doLogout, fetchNotes, state }) {
+function DashboardPage({ user, doLogin, doLogout, state }) {
 
     const authenticate = event => {
         event.preventDefault();
@@ -13,10 +13,6 @@ function DashboardPage({ user, doLogin, doLogout, fetchNotes, state }) {
         const email = form.email.value;
         const password = form.password.value;
         doLogin({ email, password });
-    }
-
-    const logout = () => {
-        doLogout();
     }
 
 
@@ -29,10 +25,7 @@ function DashboardPage({ user, doLogin, doLogout, fetchNotes, state }) {
                         ?
                         <div className="text-center">
                             <div className="mb-5">Welcome, {user.name}</div>
-                            <button
-                                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white uppercase rounded focus:outline-none block mx-auto"
-                                onClick={logout}
-                            >Logout</button>
+                            <LogoutButton />
                         </div>
                         :
                         <form className="" onSubmit={authenticate}>
@@ -64,13 +57,13 @@ function DashboardPage({ user, doLogin, doLogout, fetchNotes, state }) {
 
 const mapStateToProps = state => ({
     user: state.user,
-    state: state.state
+    state: state.state,
+    firebase: state.firebase
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     doLogin: login,
     doLogout: logout,
-    fetchNotes: getNotes,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

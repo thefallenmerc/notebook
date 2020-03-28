@@ -11,8 +11,14 @@ export const STATE_PENDING = 'STATE_PENDING';
 export const STATE_SUCCESS = 'STATE_SUCCESS';
 export const STATE_ERROR = 'STATE_ERROR';
 
+export const ADD_FIREBASE = 'ADD_FIREBASE';
+
 
 // action creators
+
+export function addFirebase(firebase) {
+    return { type: ADD_FIREBASE, firebase};
+}
 
 export function addNote(note) {
     return { type: ADD_NOTE, note };

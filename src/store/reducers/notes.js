@@ -2,73 +2,58 @@ import { setStatePending, setStateSuccess, setStateError, setNotes, addNote as A
 import NoteService from "../../services/NoteService";
 
 export const getNotes = dispatch => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(setStatePending());
-        NoteService.getNote()
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(setNotes(response.body));
-                    dispatch(setStateSuccess());
-                } else {
-                    throw new Error('failed fetch!')
-                }
+        const { firebase, user } = getState();
+        if (user) {
+            return firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').orderBy('title').onSnapshot(snapshots => {
+                const notes = [];
+                snapshots.forEach(e => {
+                    notes.push({ ...e.data(), uid: e.id });
+                })
+                dispatch(setNotes(notes));
+                dispatch(setStateSuccess());
             })
-            .catch(err => {
-                dispatch(setStateError());
-            })
+        }
+        else return;
     }
 }
 
 export const addNote = note => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(setStatePending());
-        NoteService.addNote(note)
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(AddNoteAction(response.body));
+        const { firebase, user } = getState();
+        if (user) {
+            return firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').add(note)
+                .then(response => {
+                    console.log(response);
                     dispatch(setStateSuccess());
-                } else {
-                    throw new Error('failed fetch!');
-                }
-            })
-            .catch(err => {
-                dispatch(setStateError());
-            });
+                })
+                .catch(error => {
+                    console.log({ error });
+                    dispatch(setStateError());
+                });
+
+        } else return;
     }
 }
 
 export const editNote = note => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch(setStatePending());
-        NoteService.editNote(note)
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(editNoteAction(response.body));
-                    dispatch(setStateSuccess());
-                } else {
-                    throw new Error('failed fetch!');
-                }
-            })
-            .catch(err => {
-                dispatch(setStateError());
-            });
+        const { firebase, user } = getState();
+        if (user) {
+            firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').doc(note.uid).set(note);
+        } else return;
     }
 }
 
-export const deleteNote = note => {
-    return dispatch => {
+export const deleteNote = uid => {
+    return (dispatch, getState) => {
         dispatch(setStatePending());
-        NoteService.deleteNote(note)
-            .then(response => {
-                if (response.status === 200) {
-                    dispatch(deleteNoteAction(response.body.id));
-                    dispatch(setStateSuccess());
-                } else {
-                    throw new Error('failed fetch!');
-                }
-            })
-            .catch(err => {
-                dispatch(setStateError());
-            });
+        const { firebase, user } = getState();
+        if(user) {
+            firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').doc(uid).delete();
+        }
     }
 }
