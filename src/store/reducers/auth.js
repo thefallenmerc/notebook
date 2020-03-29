@@ -6,17 +6,22 @@ export const login = ({ email, password }) => {
         dispatch(setStatePending());
         const { firebase } = getState();
         return firebase.auth.signInWithEmailAndPassword(email, password)
-        .then(response => {
-            dispatch(setStateSuccess('Login Successful!'));
-            return response;
-        })
-        .catch(error => {
-            dispatch(setStateError(error.message));
-            return error;
-        });
+            .then(response => {
+                dispatch(setStateSuccess('Login Successful!'));
+                return response;
+            })
+            .catch(error => {
+                dispatch(setStateError(error.message));
+                return error;
+            });
     }
 }
 
 export const logout = () => {
-    // return dispatch => firebase.auth.signOut()
+    return (dispatch, getState) => {
+        const { firebase, noteListener } = getState();
+        firebase.auth.signOut();
+        dispatch(setUser(null));
+        noteListener();
+    }
 }

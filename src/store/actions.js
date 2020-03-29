@@ -1,5 +1,6 @@
 // action types
 
+export const GET_NOTE_LISTENER = 'GET_NOTE_LISTENER';
 export const ADD_NOTE = 'ADD_NOTE';
 export const EDIT_NOTE = 'EDIT_NOTE';
 export const DELETE_NOTE = 'DELETE_NOTE';
@@ -17,7 +18,11 @@ export const ADD_FIREBASE = 'ADD_FIREBASE';
 // action creators
 
 export function addFirebase(firebase) {
-    return { type: ADD_FIREBASE, firebase};
+    return { type: ADD_FIREBASE, firebase };
+}
+
+export function getNoteListener(listener) {
+    return { type: GET_NOTE_LISTENER, listener };
 }
 
 export function addNote(note) {

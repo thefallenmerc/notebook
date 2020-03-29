@@ -1,4 +1,4 @@
-import { ADD_NOTE, SET_NOTES, EDIT_NOTE, DELETE_NOTE, SET_USER, STATE_SUCCESS, STATE_ERROR, STATE_PENDING, ADD_FIREBASE } from './actions';
+import { ADD_NOTE, SET_NOTES, EDIT_NOTE, DELETE_NOTE, SET_USER, STATE_SUCCESS, STATE_ERROR, STATE_PENDING, ADD_FIREBASE, GET_NOTE_LISTENER } from './actions';
 import { combineReducers } from 'redux';
 
 // const initialState = {
@@ -42,6 +42,15 @@ function user(state = null, action) {
     }
 }
 
+function noteListener(state = null, action) {
+    switch (action.type) {
+        case GET_NOTE_LISTENER:
+            return action.listener;
+        default:
+            return state;
+    }
+}
+
 function firebase(state = null, action) {
     switch (action.type) {
         case ADD_FIREBASE:
@@ -68,7 +77,8 @@ const notebook = combineReducers({
     user,
     notes,
     state,
-    firebase
+    firebase,
+    noteListener
 });
 
 export default notebook;
