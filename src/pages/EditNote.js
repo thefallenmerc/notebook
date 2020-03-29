@@ -10,7 +10,7 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote, state }) =>
     const [description, setDescription] = useState('');
 
     const { params: { id } } = match;
-    const note = notes.find(note => note.id === parseInt(id)) ?? {id: 0, title: '', description: '', uid: ''};
+    const note = notes.find(note => note.id === parseInt(id)) ?? { id: 0, title: '', description: '', uid: '' };
 
     useEffect(() => {
         setTitle(note.title || '');
@@ -26,8 +26,17 @@ const EditNotePage = ({ notes, match, history, editNote, deleteNote, state }) =>
     }
 
     const saveNote = () => {
+        let shouldBeUpdated = false;
         const updatedNote = { id: parseInt(id), title, description, uid: note.uid };
-        editNote(updatedNote);
+        for (const key in updatedNote) {
+            if (updatedNote.hasOwnProperty(key) && updatedNote[key] !== note[key]) {
+                shouldBeUpdated = true;
+                break;
+            }
+        }
+        if (shouldBeUpdated) {
+            editNote(updatedNote);
+        }
     };
 
     const removeNote = () => {

@@ -43,7 +43,15 @@ export const editNote = note => {
         dispatch(setStatePending());
         const { firebase, user } = getState();
         if (user) {
-            firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').doc(note.uid).set(note);
+            firebase.db.collection('users').doc(firebase.auth.currentUser.uid).collection('notes').doc(note.uid).set(note)
+                .then(response => {
+                    console.log(response);
+                    dispatch(setStateSuccess());
+                })
+                .catch(error => {
+                    console.log({ error });
+                    dispatch(setStateError());
+                });
         } else return;
     }
 }
